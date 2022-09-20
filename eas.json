@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 1.1.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./pc-api-9097898943185311672-931-3c164f38ee86.json"
+      },
+      "ios": {
+        "appleId": "lucasKuo@demiverse.io",
+        "ascAppId": "6443400096",
+        "appleTeamId": "92N98NH27M"
+      }
+    }
+  }
+}
