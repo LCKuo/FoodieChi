@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, View, Image, StyleSheet, Button, ScrollView, Dimensions, ImageBackground, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { Text, View, Image, StyleSheet, Button, ScrollView, Dimensions, ImageBackground, TouchableOpacity, FlatList, Alert, RefreshControl } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,9 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { Dialog } from 'react-native-simple-dialogs';
 import { GetReward, Reward_Data, RewardRedemption } from '../lib'
 const { width } = Dimensions.get('window');
+const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+};
 
 GetReward()
 const Reward_DATA = Reward_Data
@@ -99,7 +102,6 @@ function CollapsibleItem({ navigation, collapsed, data, setshowDialog1 }) {
             <Collapsible collapsed={!coll} style={{ width: '100%', height: undefined, aspectRatio: temp, zIndex: 8, backgroundColor: '#FFF3E3', marginTop: -collHeaderH }}>
                 <Image style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', resizeMode: 'stretch', zIndex: 0 }} source={require('./assets/coll_bg.png')} />
                 <View style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingTop: collHeaderH }}>
-                    <View style={{ height: 20 }}></View>
 
                     {data.rights.map((inf) => {
                         return (
@@ -192,14 +194,13 @@ function CollapsibleItem2({ navigation, collapsed, data, setshowDialog2 }) {
             <Collapsible collapsed={!coll} style={{ width: '100%', height: undefined, aspectRatio: temp, zIndex: 8, backgroundColor: '#FFF3E3', marginTop: -collHeaderH }}>
                 <Image style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', resizeMode: 'stretch', zIndex: 0 }} source={require('./assets/coll_bg.png')} />
                 <View style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', paddingTop: collHeaderH }}>
-                    <View style={{ height: 20 }}></View>
                     {
                         data.coupons.map((inf) => {
                             return (
                                 <>
                                     <TouchableOpacity onPress={() => clickBtn1(inf)} style={{ width: '85%', aspectRatio: 861 / 138 }}>
                                         <ImageBackground source={require('./assets/btn1.png')} resizeMode="stretch" style={{ width: '100%', height: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                            <Text style={styles.text}>{inf.coupon.name}</Text>
+                                            <Text style={styles.text}>{inf.coupon.name + " - 剩餘 :  " + inf.quantity + "次"}</Text>
                                         </ImageBackground>
                                     </TouchableOpacity>
                                     <View style={{ height: 20 }}></View>
@@ -239,7 +240,7 @@ export default function FeedV2({ navigation }) {
         console.log('handleSheetChanges', index);
     }, []);
 
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = React.useState();
 
     // _renderItem = ({ item, index }) => {
     //     return (
@@ -253,13 +254,24 @@ export default function FeedV2({ navigation }) {
     //     <Item bottomSheetRefCoupon={bottomSheetRefCoupon} bottomSheetRef={bottomSheetRef} navigation={navigation} item={item} title={item.title} />
     // );
     const clickBtnCG = () => {
-        setshowDialog2(false)
         RewardRedemption(cgid)
+        GetReward()
+        wait(200).then(() => {
+            setshowDialog2(false)
+        })
+
     };
+    const [refreshing, setRefreshing] = React.useState(false);
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        GetReward()
+        wait(1500).then(() => setRefreshing(false));
+    }, []);
     return (
         <SafeAreaView style={styles.container}>
-
-            <ScrollView style={{ width: '100%', height: '100%', marginBottom: 70 }}>
+            <ScrollView
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                style={{ width: '100%', height: '100%', marginBottom: 70 }}>
                 <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                     <View style={{ height: 16 }}></View>
                     <Image style={{ zIndex: 2, resizeMode: 'stretch', width: '84%', flex: 1, height: undefined, aspectRatio: 1016 / 188 }} source={require('./assets/logo.png')} />
@@ -287,6 +299,7 @@ export default function FeedV2({ navigation }) {
                         }}>
                         {Reward_Data.map((inf) => {
                             return (
+
                                 <View style={styles.swiper_view}>
                                     <Image style={{ resizeMode: 'cover', aspectRatio: 1 / 1, width: '100%', height: undefined, borderRadius: 16 }} source={{ uri: inf.skin.img ? inf.skin.img.replace('https', 'http') : 'http://media-cdn.tripadvisor.com/media/photo-s/17/f5/39/f7/fooood-at-the-food-department.jpg' }} />
                                 </View>

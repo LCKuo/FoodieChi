@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
 import axios from "axios";
 import image from "../main/pngs/login.png";
-import { login } from "../lib"
+import { login, Registration } from "../lib"
 WebBrowser.maybeCompleteAuthSession();
 export var userName = "Desa";
 export var login_email = "";
@@ -22,8 +22,6 @@ export default function Landing(props) {
             if (jsonFile) {
                 props.doLoading()
                 await AsyncStorage.setItem("name", jsonFile.name ? jsonFile.name : "")
-                userName = jsonFile.name ? jsonFile.name : "Desa setting"
-                login_email = jsonFile.email
                 await AsyncStorage.setItem("picture", jsonFile.picture ? jsonFile.picture : "")
                 await AsyncStorage.setItem("email", jsonFile.email ? jsonFile.email : "")
                 await AsyncStorage.setItem("local", jsonFile.id ? jsonFile.id : "")
@@ -83,7 +81,7 @@ export default function Landing(props) {
             <ImageBackground source={image} resizeMode="cover" style={styles.image}>
                 <Button
                     title={"ForceLin"}
-                    onPress={() => { props.doLin() }}
+                    onPress={() => { props.doLin("a") }}
                 />
                 <TouchableOpacity onPress={() => { promptAsyncG({ useProxy: false, showInRecents: true }) }} style={{ width: '8%', aspectRatio: 1 }}>
                     <ImageBackground source={require('./Google.png')} resizeMode="stretch" style={{ width: '100%', height: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>

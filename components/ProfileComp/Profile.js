@@ -73,7 +73,7 @@ export default function Profile(props) {
                         <ImageBackground source={{ uri: props.picture }} resizeMode="stretch" style={{ width: '100%', height: '100%', flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: window.width * 0.4 / 2, overflow: 'hidden' }}>
                         </ImageBackground>
                     </TouchableOpacity>
-                    <Text style={{ color: '#2E1A47', fontSize: 25, textAlign: 'center' }}>{userName}</Text>
+                    <Text style={{ color: '#2E1A47', fontSize: 25, textAlign: 'center' }}>{props.name}</Text>
 
                     <TouchableOpacity onPress={() => { clickSetting() }} style={{ position: 'absolute', right: 4, top: 0, width: 64, height: 64, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 32, height: 32 }} source={require('./assets/icon_setting.png')} />
@@ -99,6 +99,7 @@ export default function Profile(props) {
 function FirstRoute({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: '#FFF3E3' }} >
+
             <ScrollView
                 onLayout={(event) => {
                     var { x, y, width, height } = event.nativeEvent.layout;
@@ -114,11 +115,12 @@ function FirstRoute({ navigation }) {
                     bottom: 0,
                     right: 0,
                 }}>
+
                 {[1, 2, 3, 3, 3, 3, 3].map((answer, i) => {
                     return (
                         <View style={[styles.swiper_view, { width: width }]}>
-                            <TouchableOpacity style={{ width: '100%', height: '100%', paddingLeft: 0, paddingRight: 0 }} onPress={() => { }}>
-                                <Image style={{ width: '100%', height: '100%', resizeMode: 'stretch', borderRadius: 16 }} source={require('./assets/demo2.png')} />
+                            <TouchableOpacity onPress={() => { }}>
+                                <Image style={{ resizeMode: 'cover', aspectRatio: 1 / 1, width: '100%', height: undefined, borderRadius: 16 }} source={require('./assets/demo2.png')} />
                             </TouchableOpacity>
                         </View>
                     )
@@ -144,6 +146,7 @@ const renderScene = SceneMap({
 
 
 
+
 const styles = StyleSheet.create({
     profilePic: {
         width: 150,
@@ -155,6 +158,18 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         justifyContent: "center"
+    },
+    swiper_view: {
+        marginTop: 0,
+        width: width,
+        height: undefined,
+        aspectRatio: 1 / 1,
+        borderRadius: 10,
+        paddingLeft: 8,
+        paddingRight: 8,
+        borderRadius: 16,
+        margin: 0
+        //paddingHorizontal : 30
     },
     text: {
         color: "white",

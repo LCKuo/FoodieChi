@@ -18,8 +18,8 @@ export default function Main(props, navigation) {
             <>
                 <ProfileScreen
                     doLout={props.doLout}
-                    name={props.name ? props.name : "Default user"}
-                    picture={props.picture ? props.picture : "http://image.uc.cn/s/wemedia/s/upload/2021/0a9c2211bc7d49468c41e23207d766db.png"}
+                    name={props.name ? props.name : "FoodieVerse"}
+                    picture={props.picture ? props.picture : "http://foodieverse.s3.s3.amazonaws.com/static/512x512.png"}
                     email={props.email}
                     navigation={navigation}
                 />

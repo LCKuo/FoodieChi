@@ -57,8 +57,12 @@ export class App extends Component {
     this.checkLogin();
   }
 
-  doLin = () => {
-    this.getInfo()
+  doLin = (a) => {
+    if (a) {
+      this.getInfo()
+    } else {
+      this.getInfo()
+    }
   }
 
   doLout = (bool) => {
@@ -73,18 +77,13 @@ export class App extends Component {
 
   }
   getInfo = async () => {
+    let _name;
+    let _picture;
+    let _email;
     try {
-      // const _id = "Chi123..."
-      // const _username = 'Chi_Test1'
-      // const _invitation = ""
-      // const _email="Chi7771@gmail.com"
-
-
-      //const _id = await AsyncStorage.getItem("local")
-      const _name = await AsyncStorage.getItem("name")
-      const _picture = await AsyncStorage.getItem("picture")
-      const _email = await AsyncStorage.getItem("email")
-      login("lucifer87222@gmail.com", "容泡泡123...")
+      _name = await AsyncStorage.getItem("name")
+      _picture = await AsyncStorage.getItem("picture")
+      _email = await AsyncStorage.getItem("email")
 
 
       //拿站台東西寫這，拿完再 loggedIn: true 
@@ -105,6 +104,8 @@ export class App extends Component {
     } catch (err) {
       alert(err)
     }
+    //login(_email, 'Qq111111')
+
   }
 
   Combine = () => {

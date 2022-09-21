@@ -7,7 +7,7 @@ const base_Invitationcode = 'ruzf7wzRWwb8BUz'
 
 export let data = {
   reward_id: null,
-  User_Token: '7bbf20be337d100188028c380c77df39503e8aaf',
+  User_Token: 'e9b07b3da251c02302185a4f2bb87636189ac6ee',
 };
 
 export let Profile_data = {
@@ -25,7 +25,7 @@ export const restoreToken = async () => {
 }
 export const getToken = async () => {
   try {
-    data.User_Token = await AsyncStorage.getItem("User_Token")
+    //data.User_Token = await AsyncStorage.getItem("User_Token")
   } catch (e) {
     alert(`cleaning error ${e}`)
   }
@@ -73,7 +73,6 @@ export const Registration = (username, id, email, invitation) => {
       if (login.email != null || login.non_field_errors != null || login.username != null) {
         Alert.alert("Registration Error", JSON.stringify(login))
       } else {
-        Alert.alert("註冊成功", login.detail);
         login(username, id)
       }
     })
